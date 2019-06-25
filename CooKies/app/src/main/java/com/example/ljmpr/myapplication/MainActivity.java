@@ -1,5 +1,6 @@
 package com.example.ljmpr.myapplication;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     SimpleDateFormat f = new SimpleDateFormat("HH:mm:ss"); //어떤 형태로 시간을 가져올지 정한다.
     Date d1, d2, d3;
     long Am, Pm, Nm;
+    Thread th;
+    boolean a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +45,13 @@ public class MainActivity extends AppCompatActivity {
                 setContentView(R.layout.day);
                 button = findViewById(R.id.Cookie);
                 button.setImageResource(R.drawable.imgbtn_day);
+                a = true;
             }
             else { //그 외의 시간에는 night 화면이 배경으로 뜨게 한다.
                 setContentView(R.layout.night);
                 button = findViewById(R.id.Cookie);
                 button.setImageResource(R.drawable.imgbtn_night);
+                a = false;
             }
 
 
@@ -78,6 +84,32 @@ public class MainActivity extends AppCompatActivity {
                 cd.show();
             }
         });
+
+        th = new Thread(new Runnable() {
+            boolean b = true;
+            @Override
+            public void run() {
+                while(b){
+                    Calendar c = Calendar.getInstance();
+                    if((a && c.get(Calendar.HOUR_OF_DAY) == 20) || !a && c.get(Calendar.HOUR_OF_DAY) == 8) {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                b = !b;
+                                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                MainActivity.this.finish();
+                            } });
+                    }
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
+        th.start();
 
     }
 
