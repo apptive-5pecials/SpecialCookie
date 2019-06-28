@@ -6,16 +6,13 @@
     android:orientation="vertical"
     android:background="@drawable/background_night"
     android:id="@+id/night">
-    
+
     <ImageView
-        android:layout_width="170.2dp"
-        android:layout_height="170.2dp"
-        android:src="@drawable/moon"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-    
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/night"/>
+
     <ImageButton
         android:id="@+id/Cookie"
         android:layout_width="101dp"

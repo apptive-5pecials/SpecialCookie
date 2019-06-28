@@ -41,17 +41,26 @@ public class MainActivity extends AppCompatActivity {
             Pm = d2.getTime();
             Nm = d3.getTime();
 
+            Long reset = pref.getLong("reset", 0); // 리셋 시간 불러오기
+            String text = "";
+
             if(Am<Nm && Nm<Pm) { //8시~20시에 day 화면이 배경으로 뜨도록 한다.
                 setContentView(R.layout.day);
                 button = findViewById(R.id.Cookie);
                 button.setImageResource(R.drawable.imgbtn_day);
                 a = true;
+                if(now < reset) {
+                    button.setImageResource(R.drawable.cracked_cookie_day);
+                }
             }
             else { //그 외의 시간에는 night 화면이 배경으로 뜨게 한다.
                 setContentView(R.layout.night);
                 button = findViewById(R.id.Cookie);
                 button.setImageResource(R.drawable.imgbtn_night);
                 a = false;
+                if(now < reset) {
+                    button.setImageResource(R.drawable.cracked_cookie_night);
+                }
             }
 
 
