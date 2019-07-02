@@ -1,7 +1,10 @@
 package com.example.ljmpr.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     long Am, Pm, Nm;
     Thread th;
     boolean a;
+    Context tcontext;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,18 @@ public class MainActivity extends AppCompatActivity {
 
         final SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         ImageButton button = null;
+
+        tcontext = getApplicationContext();
+
+        //sound player
+        final SoundPool sp = new SoundPool(1, // 최대 음악파일의 개수
+                AudioManager.STREAM_MUSIC,  // 스트림 타입
+                0);  // 음질
+
+        final int soundID = sp.load(tcontext,
+                R.raw.snack,
+                1);
+
 
         try {
             d1 = f.parse("08:00:00"); // 기준 시간과 현재 시간을 파싱해준다.
@@ -68,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
         final ImageButton buttons = button;
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +96,14 @@ public class MainActivity extends AppCompatActivity {
                 String text = "";
 
                 Log.d("ddd",String.valueOf(reset));
+
+                sp.play(soundID, // 준비한 soundID
+                        1,         // 왼쪽 볼륨 float 0.0(작은소리)~1.0(큰소리)
+                        1,         // 오른쪽볼륨 float
+                        0,         // 우선순위 int
+                        0,     // 반복회수 int -1:무한반복, 0:반복안함
+                        1.5f);    // 재생속도 float 0.5(절반속도)~2.0(2배속)
+                // 음악 재생
 
                 if(now < reset) {
                     text = pref.getString("text", "");
