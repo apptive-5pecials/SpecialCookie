@@ -1,4 +1,4 @@
-package com.example.ljmpr.myapplication;
+package com.apptive.fivespecial.fortunecookie;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

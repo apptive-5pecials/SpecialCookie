@@ -1,4 +1,4 @@
-package com.example.ljmpr.myapplication;
+package com.apptive.fivespecial.fortunecookie;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

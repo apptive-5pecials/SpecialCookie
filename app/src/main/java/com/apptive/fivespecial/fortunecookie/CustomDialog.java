@@ -1,4 +1,4 @@
-package com.example.ljmpr.myapplication;
+package com.apptive.fivespecial.fortunecookie;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
@@ -27,7 +26,7 @@ public class CustomDialog extends Dialog {
     String sql; //명언
     String sql1;
     Cursor cursor;
-    TextView tv;
+    TextView tv, tt;
     Context con;
 
     long now = System.currentTimeMillis(); //현재 시간을 받아온다.
@@ -46,6 +45,7 @@ public class CustomDialog extends Dialog {
         setContentView(R.layout.dialog); // 다이얼로그에서 사용할 레이아웃
 
         tv = findViewById(R.id.text); // 텍스트 뷰에 명언이나 질문이 화면에 출력될 수 있도록 한다.
+        tt = findViewById(R.id.title2);
 
         helper = new DBHelper(getContext(),dbName,null,dbVersion);
         db = helper.getWritableDatabase(); // 데이터를 쓰기 전용으로
@@ -54,6 +54,22 @@ public class CustomDialog extends Dialog {
             select(); // 데이터 조회 메소드
         else {
             tv.setText(text);
+            try{
+                Date d1 = f.parse("08:00:00"); // 기준이 되는 시간을 파싱해준다.
+                Date d2 = f.parse("20:00:00");
+                Date d3 = f.parse(f.format(Ntime)); // 현재 시간도 파싱
+                long Am = d1.getTime(); // 파싱된 값을 long값에 넣어준다.
+                long Pm = d2.getTime();
+                long Nm = d3.getTime();
+
+                if(Am<Nm && Nm<Pm) {
+                    tt.setText("오늘의 명언");
+                } else {
+                    tt.setText("오늘의 질문");
+                }
+            }catch(Exception e){}
+
+
         }
 
     }
@@ -70,6 +86,7 @@ public class CustomDialog extends Dialog {
             long Nm = d3.getTime();
 
             if(Am<Nm && Nm<Pm) { // 8시 ~ 20시 사이에 아래 코드가 실행되도록 한다.
+                tt.setText("오늘의 명언");
                 sql = "SELECT*FROM WiseSaying order by random() limit 1 ;"; // 명언 DB에 있는 값을 하나 랜덤으로 불러온다.
                 cursor = db.rawQuery(sql,null);
                 while (cursor.moveToNext()) {
@@ -95,6 +112,7 @@ public class CustomDialog extends Dialog {
                 }
             }
             else {
+                tt.setText("오늘의 질문");
                 sql1 = "SELECT*FROM QuesTion order by random() limit 1 ;"; // 질문 DB에 있는 값을 하나 랜덤으로 불러온다.
                 cursor = db.rawQuery(sql1,null);
                 while (cursor.moveToNext()) {
